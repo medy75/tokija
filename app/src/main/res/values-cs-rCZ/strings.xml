@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tokija</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Heslo</string>
+    <string name="prompt_username">Uživ. jméno</string>
+    <string name="action_sign_in">Přihlášení</string>
+    <string name="action_sign_in_short">Přihlášení</string>
+    <string name="error_invalid_email">Tento email není validní</string>
+    <string name="error_invalid_password">Heslo je příliš krátké</string>
+    <string name="error_incorrect_password">Nesprávné heslo</string>
+    <string name="error_field_required">Pole je povinné</string>
+    <string name="permission_rationale">Potřebujeme kontaktní informace</string>
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Vyžadováno oprávnění k fotoaparátu</string>
+    <string name="no_camera_permission">Aplikace nemůže být spuštěna bez povolení k fotoaparátu a bude ukončena.</string>
+    <string name="low_storage_error">Nedostatek místa v zařízení</string>
+    <string name="title_activity_main">Barcode Reader Sample</string>
+    <string name="barcode_header">Klikni na \"Číst kód\" pro přečtení kódu</string>
+    <string name="read_barcode">Číst kód</string>
+    <string name="auto_focus">Auto ostření</string>
+    <string name="use_flash">Použít blesk</string>
+    <string name="barcode_success">Kód načten</string>
+    <string name="barcode_failure">Nezachycen žádný kód</string>
+    <string name="barcode_error">Chyba při čtení kódu: %1$s</string>
+</resources>
