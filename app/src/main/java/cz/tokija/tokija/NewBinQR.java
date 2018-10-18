@@ -54,6 +54,15 @@ public class NewBinQR extends Activity implements View.OnClickListener {
         useFlash = (CompoundButton) findViewById(R.id.use_flash);
 
         findViewById(R.id.read_barcode).setOnClickListener(this);
+
+        findViewById(R.id.all_bins_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent k = new Intent(NewBinQR.this, BinsListActivity.class);
+                startActivity(k);
+            }
+        });
+
     }
 
     /**
