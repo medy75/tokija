@@ -11,11 +11,18 @@ import retrofit2.http.Headers;
  * Author: jaroslavmedek on 08/10/2018.
  */
 public interface APIInterface {
-    @Headers({
-            "X-User-Email: info@tokija.cz",
-            "X-User-Token: 5Sbupp-Sk5wnDYZqvpz_"
-    })
-@GET("bins.json")
+//    @Headers({
+//            "X-User-Email: info@tokija.cz",
+//            "X-User-Token: 5Sbupp-Sk5wnDYZqvpz_"
+//    })
+    @GET("bins.json")
     Call<List<Bin>> getBins();
+
+//    @Headers({
+//            "X-User-Email: info@tokija.cz",
+//            "X-User-Token: 5Sbupp-Sk5wnDYZqvpz_"
+//    })
+    @GET("bins.json")
+    Call<String> getBinsString();
 
 }

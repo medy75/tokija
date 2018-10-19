@@ -3,7 +3,6 @@ package cz.tokija.tokija.client.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -13,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "placed",
         "taken",
         "shredded",
+        "collect_date",
         "created_at",
         "updated_at",
         "url"
@@ -20,11 +20,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Bin {
 
     @JsonProperty("id")
-    private int id;
+    private Integer id;
     @JsonProperty("firm_id")
-    private int firmId;
+    private Integer firmId;
     @JsonProperty("number")
-    private int number;
+    private Integer number;
     @JsonProperty("frequency")
     private String frequency;
     @JsonProperty("placed")
@@ -33,6 +33,8 @@ public class Bin {
     private String taken;
     @JsonProperty("shredded")
     private Object shredded;
+    @JsonProperty("collect_date")
+    private String collectDate;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -41,32 +43,32 @@ public class Bin {
     private String url;
 
     @JsonProperty("id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @JsonProperty("firm_id")
-    public int getFirmId() {
+    public Integer getFirmId() {
         return firmId;
     }
 
     @JsonProperty("firm_id")
-    public void setFirmId(int firmId) {
+    public void setFirmId(Integer firmId) {
         this.firmId = firmId;
     }
 
     @JsonProperty("number")
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
     @JsonProperty("number")
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -108,6 +110,16 @@ public class Bin {
     @JsonProperty("shredded")
     public void setShredded(Object shredded) {
         this.shredded = shredded;
+    }
+
+    @JsonProperty("collect_date")
+    public String getCollectDate() {
+        return collectDate;
+    }
+
+    @JsonProperty("collect_date")
+    public void setCollectDate(String collectDate) {
+        this.collectDate = collectDate;
     }
 
     @JsonProperty("created_at")
