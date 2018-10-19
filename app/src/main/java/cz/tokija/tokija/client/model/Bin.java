@@ -1,153 +1,144 @@
 package cz.tokija.tokija.client.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "id",
-        "firm_id",
-        "number",
-        "frequency",
-        "placed",
-        "taken",
-        "shredded",
-        "collect_date",
-        "created_at",
-        "updated_at",
-        "url"
-})
-public class Bin {
 
-    @JsonProperty("id")
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import org.joda.time.DateTime;
+
+import java.util.Date;
+
+
+public class Bin {
+    @SerializedName("id")
+    @Expose
     private Integer id;
-    @JsonProperty("firm_id")
+    @SerializedName("firm_name")
+    @Expose
+    private String firmName;
+    @SerializedName("firm_id")
+    @Expose
     private Integer firmId;
-    @JsonProperty("number")
+    @SerializedName("number")
+    @Expose
     private Integer number;
-    @JsonProperty("frequency")
+    @SerializedName("frequency")
+    @Expose
     private String frequency;
-    @JsonProperty("placed")
-    private String placed;
-    @JsonProperty("taken")
-    private String taken;
-    @JsonProperty("shredded")
-    private Object shredded;
-    @JsonProperty("collect_date")
-    private String collectDate;
-    @JsonProperty("created_at")
-    private String createdAt;
-    @JsonProperty("updated_at")
-    private String updatedAt;
-    @JsonProperty("url")
+    @SerializedName("placed")
+    @Expose
+    private Date placed;
+    @SerializedName("taken")
+    @Expose
+    private Date taken;
+    @SerializedName("shredded")
+    @Expose
+    private Date shredded;
+    @SerializedName("collect_date")
+    @Expose
+    private Date collectDate;
+    @SerializedName("created_at")
+    @Expose
+    private Date createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private Date updatedAt;
+    @SerializedName("url")
+    @Expose
     private String url;
 
-    @JsonProperty("id")
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @JsonProperty("firm_id")
+    public String getFirmName() {
+        return firmName;
+    }
+
+    public void setFirmName(String firmName) {
+        this.firmName = firmName;
+    }
+
     public Integer getFirmId() {
         return firmId;
     }
 
-    @JsonProperty("firm_id")
     public void setFirmId(Integer firmId) {
         this.firmId = firmId;
     }
 
-    @JsonProperty("number")
     public Integer getNumber() {
         return number;
     }
 
-    @JsonProperty("number")
     public void setNumber(Integer number) {
         this.number = number;
     }
 
-    @JsonProperty("frequency")
     public String getFrequency() {
         return frequency;
     }
 
-    @JsonProperty("frequency")
     public void setFrequency(String frequency) {
         this.frequency = frequency;
     }
 
-    @JsonProperty("placed")
-    public String getPlaced() {
-        return placed;
+    public DateTime getPlaced() {
+        return new DateTime(placed);
     }
 
-    @JsonProperty("placed")
-    public void setPlaced(String placed) {
+    public void setPlaced(Date placed) {
         this.placed = placed;
     }
 
-    @JsonProperty("taken")
-    public String getTaken() {
-        return taken;
+    public DateTime getTaken() {
+        return new DateTime(taken);
     }
 
-    @JsonProperty("taken")
-    public void setTaken(String taken) {
+    public void setTaken(Date taken) {
         this.taken = taken;
     }
 
-    @JsonProperty("shredded")
-    public Object getShredded() {
-        return shredded;
+    public DateTime getShredded() {
+        return new DateTime(shredded);
     }
 
-    @JsonProperty("shredded")
-    public void setShredded(Object shredded) {
+    public void setShredded(Date shredded) {
         this.shredded = shredded;
     }
 
-    @JsonProperty("collect_date")
-    public String getCollectDate() {
-        return collectDate;
+    public DateTime getCollectDate() {
+        return new DateTime(collectDate);
     }
 
-    @JsonProperty("collect_date")
-    public void setCollectDate(String collectDate) {
+    public void setCollectDate(Date collectDate) {
         this.collectDate = collectDate;
     }
 
-    @JsonProperty("created_at")
-    public String getCreatedAt() {
-        return createdAt;
+    public DateTime getCreatedAt() {
+        return new DateTime(createdAt);
     }
 
-    @JsonProperty("created_at")
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    @JsonProperty("updated_at")
-    public String getUpdatedAt() {
-        return updatedAt;
+    public DateTime getUpdatedAt() {
+        return new DateTime(updatedAt);
     }
 
-    @JsonProperty("updated_at")
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
-    @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
