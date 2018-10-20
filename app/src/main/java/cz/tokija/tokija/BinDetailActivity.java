@@ -6,11 +6,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,17 +25,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BinsListActivity extends AppCompatActivity {
+public class BinDetailActivity extends AppCompatActivity {
 
     APIInterface client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Client.setEmail("info@tokija.cz");
-        Client.setToken("5Sbupp-Sk5wnDYZqvpz_");
+        setContentView(R.layout.activity_bin_detail);
         client = new Client().getClient();
-        setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,16 +46,15 @@ public class BinsListActivity extends AppCompatActivity {
             }
         });
 
+        Intent mIntent = getIntent();
+        int binId = mIntent.getIntExtra("binId", 0);
 
-        client.getBins().enqueue(new Callback<List<Bin>>() {
+        client.getBin(binId).enqueue(new Callback<Bin>() {
             @Override
-            public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
+            public void onResponse(Call<Bin> call, Response<Bin> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<Bin> bins = new ArrayList<>(response.body());
-                    BinsAdapter adapter = new BinsAdapter(getApplicationContext(), bins);
-                    ListView listView = (ListView) findViewById(R.id.binsList);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemClickListener(clickListener(bins));
+                    Bin bin = response.body();
+                    setFields(bin);
                 } else {
                     Toast toast = null;
                     try {
@@ -70,7 +69,7 @@ public class BinsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Bin>> call, Throwable t) {
+            public void onFailure(Call<Bin> call, Throwable t) {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         t.getMessage(),
                         Toast.LENGTH_LONG);
@@ -79,12 +78,17 @@ public class BinsListActivity extends AppCompatActivity {
         });
     }
 
-    private AdapterView.OnItemClickListener clickListener(ArrayList<Bin> bins){
-        return (adapterView, view, i, l) -> {
-            Intent myIntent = new Intent(BinsListActivity.this, BinDetailActivity.class);
-            myIntent.putExtra("binId", bins.get(i).getId());
-            startActivity(myIntent);
-        };
+    private void setFields(Bin bin){
+        TextView binNumber = findViewById(R.id.binNumber);
+        TextView binFirm = findViewById(R.id.binFirm);
+        TextView binCollect = findViewById(R.id.binCollectDate);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YY");
+
+        binNumber.setText(String.valueOf(bin.getNumber()));
+        binFirm.setText(bin.getFirmName());
+        binCollect.setText(bin.getCollectDate().toString(formatter));
+
     }
 
 }
