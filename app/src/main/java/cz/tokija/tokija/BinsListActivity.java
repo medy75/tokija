@@ -45,51 +45,12 @@ public class BinsListActivity extends AppCompatActivity {
 //        });
 
 
-//        client.getBinsString().enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Call<String> call, Response<String> response) {
-//                if (response.isSuccessful()) {
-//                    String bins = response.body();
-//
-//                    System.out.println("************************************************************************");
-//                    System.out.println(bins);
-//                    System.out.println("************************************************************************");
-//
-//                } else {
-//                    Toast toast = null;
-//                    try {
-//                        toast = Toast.makeText(getApplicationContext(),
-//                                response.errorBody().string(),
-//                                Toast.LENGTH_LONG);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    toast.show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<String> call, Throwable t) {
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        t.getMessage(),
-//                        Toast.LENGTH_LONG);
-//                toast.show();
-//            }
-//        });
-
         client.getBins().enqueue(new Callback<List<Bin>>() {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<Bin> bins = new ArrayList<>(response.body());
                     BinsAdapter adapter = new BinsAdapter(getApplicationContext(), bins);
-
-                    System.out.println("************************************************************************");
-                    for (Bin bin : bins) {
-                        System.out.println(bin.getNumber());
-                        System.out.println(bin.getCollectDate());
-                    }
-                    System.out.println("************************************************************************");
                     ListView listView = (ListView) findViewById(R.id.binsList);
                     listView.setAdapter(adapter);
                 } else {
