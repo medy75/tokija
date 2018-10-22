@@ -7,10 +7,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +30,8 @@ import retrofit2.Response;
 public class BinsListActivity extends AppCompatActivity {
 
     APIInterface client;
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final String TAG = "BarcodeMain";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,11 @@ public class BinsListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                // intent.putExtra(BarcodeCaptureActivity.UseFlash, useFlash.isChecked());
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
             }
         });
 
@@ -57,15 +66,11 @@ public class BinsListActivity extends AppCompatActivity {
                     listView.setAdapter(adapter);
                     listView.setOnItemClickListener(clickListener(bins));
                 } else {
-                    Toast toast = null;
                     try {
-                        toast = Toast.makeText(getApplicationContext(),
-                                response.errorBody().string(),
-                                Toast.LENGTH_LONG);
+                        showToast(response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    toast.show();
                 }
             }
 
@@ -79,12 +84,46 @@ public class BinsListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    //statusMessage.setText(R.string.barcode_success);
+                    //barcodeValue.setText(barcode.displayValue);
+                    Intent myIntent = new Intent(BinsListActivity.this, BinDetailActivity.class);
+                    myIntent.putExtra("binId", barcode.displayValue);
+                    startActivity(myIntent);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                } else {
+                    showToast(getString(R.string.barcode_failure));
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            } else {
+                showToast(String.format(getString(R.string.barcode_error),
+                        CommonStatusCodes.getStatusCodeString(resultCode)));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     private AdapterView.OnItemClickListener clickListener(ArrayList<Bin> bins){
         return (adapterView, view, i, l) -> {
+            showToast("starting bin detail activity: " + i);
             Intent myIntent = new Intent(BinsListActivity.this, BinDetailActivity.class);
-            myIntent.putExtra("binId", bins.get(i).getId());
+            myIntent.putExtra("binId", String.valueOf(bins.get(i).getId()));
             startActivity(myIntent);
         };
+    }
+
+    private void showToast(String message){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                message,
+                Toast.LENGTH_LONG);
+        toast.show();
     }
 
 }

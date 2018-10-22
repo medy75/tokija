@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="75"
+            android:textColor="@android:color/black"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -29,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Firm name"
+                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -42,18 +44,21 @@
                     android:id="@+id/binFrequency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Týdně" />
+                    android:text="Týdně"
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" - " />
+                    android:text=" - "
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:id="@+id/binCollectDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30/12/18"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
 
             </LinearLayout>

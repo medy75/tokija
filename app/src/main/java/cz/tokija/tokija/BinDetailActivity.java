@@ -47,9 +47,9 @@ public class BinDetailActivity extends AppCompatActivity {
         });
 
         Intent mIntent = getIntent();
-        int binId = mIntent.getIntExtra("binId", 0);
+        String binId = mIntent.getStringExtra("binId");
 
-        client.getBin(binId).enqueue(new Callback<Bin>() {
+        client.getBin(Integer.parseInt(binId)).enqueue(new Callback<Bin>() {
             @Override
             public void onResponse(Call<Bin> call, Response<Bin> response) {
                 if (response.isSuccessful()) {
@@ -85,10 +85,17 @@ public class BinDetailActivity extends AppCompatActivity {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YY");
 
-        binNumber.setText(String.valueOf(bin.getNumber()));
+        binNumber.setText(String.valueOf(bin.getId()));
         binFirm.setText(bin.getFirmName());
         binCollect.setText(bin.getCollectDate().toString(formatter));
 
+    }
+
+    private void showToast(String message){
+        Toast toast = Toast.makeText(getApplicationContext(),
+                message,
+                Toast.LENGTH_LONG);
+        toast.show();
     }
 
 }

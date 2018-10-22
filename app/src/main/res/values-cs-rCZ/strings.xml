@@ -23,4 +23,6 @@
     <string name="barcode_success">Kód načten</string>
     <string name="barcode_failure">Nezachycen žádný kód</string>
     <string name="barcode_error">Chyba při čtení kódu: %1$s</string>
+    <string name="title_activity_bins_list">Seznam binů</string>
+    <string name="title_activity_bin_detail">Detail binu</string>
 </resources>

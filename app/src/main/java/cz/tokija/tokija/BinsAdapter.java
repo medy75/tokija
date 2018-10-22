@@ -44,7 +44,7 @@ public class BinsAdapter extends ArrayAdapter<Bin> {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YY");
 
-        binNumber.setText(String.valueOf(bin.getNumber()));
+        binNumber.setText(String.valueOf(bin.getId()));
         binFirm.setText(bin.getFirmName());
         binFrequency.setText(bin.getFrequency());
         binCollectDate.setText(bin.getCollectDate().toString(formatter));
