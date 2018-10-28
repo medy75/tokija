@@ -49,25 +49,14 @@ public class BinsListActivity extends MainActivity {
         pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setRefreshing(true);
         pullToRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadBinData(); // your code
-            }
-        });
+        pullToRefresh.setOnRefreshListener(this::loadBinData);
 
-        //showProgressBar();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
-                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-                // intent.putExtra(BarcodeCaptureActivity.UseFlash, useFlash.isChecked());
-
-                startActivityForResult(intent, RC_BARCODE_CAPTURE);
-            }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            // intent.putExtra(BarcodeCaptureActivity.UseFlash, useFlash.isChecked());
+            startActivityForResult(intent, RC_BARCODE_CAPTURE);
         });
 
         loadBinData();

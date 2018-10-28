@@ -10,15 +10,6 @@
     tools:context=".BinsListActivity"
     tools:showIn="@layout/activity_bins_list">
 
-    <!--<ProgressBar-->
-        <!--android:id="@+id/indeterminateBar"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
     <ListView
         android:id="@+id/binsList"
         android:layout_width="match_parent"
