@@ -28,12 +28,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BinsListActivity extends AppCompatActivity {
+public class BinsListActivity extends MainActivity {
 
     APIInterface client;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class BinsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ProgressBar progressBar = findViewById(R.id.indeterminateBar);
+        showProgressBar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +62,7 @@ public class BinsListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                 if (response.isSuccessful()) {
-                    progressBar.setVisibility(View.GONE);
+                    hideProgressBar();
                     ArrayList<Bin> bins = new ArrayList<>(response.body());
                     BinsAdapter adapter = new BinsAdapter(getApplicationContext(), bins);
                     ListView listView = (ListView) findViewById(R.id.binsList);
@@ -122,13 +121,6 @@ public class BinsListActivity extends AppCompatActivity {
             myIntent.putExtra("firmId", String.valueOf(bins.get(i).getFirmId()));
             startActivity(myIntent);
         };
-    }
-
-    private void showToast(String message){
-        Toast toast = Toast.makeText(getApplicationContext(),
-                message,
-                Toast.LENGTH_LONG);
-        toast.show();
     }
 
 }

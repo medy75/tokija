@@ -37,6 +37,9 @@ public class Bin {
     @SerializedName("collect_date")
     @Expose
     private Date collectDate;
+    @SerializedName("note")
+    @Expose
+    private String note;
     @SerializedName("created_at")
     @Expose
     private Date createdAt;
@@ -117,6 +120,14 @@ public class Bin {
 
     public void setCollectDate(Date collectDate) {
         this.collectDate = collectDate;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public DateTime getCreatedAt() {

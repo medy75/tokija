@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class BinDetailActivity extends MainActivity {
         client = new Client().getClient();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        showProgressBar();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -138,10 +140,22 @@ public class BinDetailActivity extends MainActivity {
     }
 
     private void setBinFields(Bin bin) {
+        hideProgressBar();
+
         TextView binNumber = findViewById(R.id.binNumber);
         TextView binCollect = findViewById(R.id.binCollectDate);
         TextView binFrequency = findViewById(R.id.binFrequency);
         TextView binPlaced = findViewById(R.id.binPlaced);
+        TextView binTken = findViewById(R.id.binTaken);
+        TextView binNote = findViewById(R.id.binNote);
+
+        if ("sklad".equalsIgnoreCase(bin.getFirmName())){
+            findViewById(R.id.notNewBinLayout).setVisibility(View.GONE);
+            findViewById(R.id.newBinLayout).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.newBinLayout).setVisibility(View.GONE);
+            findViewById(R.id.notNewBinLayout).setVisibility(View.VISIBLE);
+        }
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YYYY");
 
@@ -149,9 +163,13 @@ public class BinDetailActivity extends MainActivity {
         binCollect.setText(bin.getCollectDate().toString(formatter));
         binFrequency.setText(bin.getFrequency());
         binPlaced.setText(bin.getPlaced().toString(formatter));
+        binTken.setText(bin.getTaken().toString(formatter));
+        binNote.setText(bin.getNote());
     }
 
     private void setFirmFields(Firm firm) {
+        hideProgressBar();
+
         TextView firmName = findViewById(R.id.firmName);
         TextView firmAddress = findViewById(R.id.firmAddress);
         TextView firmCity = findViewById(R.id.firmCity);
