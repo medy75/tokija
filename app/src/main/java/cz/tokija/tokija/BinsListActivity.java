@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -33,6 +34,7 @@ public class BinsListActivity extends MainActivity {
     APIInterface client;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
+    SwipeRefreshLayout pullToRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,18 @@ public class BinsListActivity extends MainActivity {
         setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showProgressBar();
+
+        pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setRefreshing(true);
+        pullToRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadBinData(); // your code
+            }
+        });
+
+        //showProgressBar();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,12 +70,17 @@ public class BinsListActivity extends MainActivity {
             }
         });
 
+        loadBinData();
 
+    }
+
+    private void loadBinData(){
         client.getBins().enqueue(new Callback<List<Bin>>() {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                 if (response.isSuccessful()) {
-                    hideProgressBar();
+                    //hideProgressBar();
+                    pullToRefresh.setRefreshing(false);
                     ArrayList<Bin> bins = new ArrayList<>(response.body());
                     BinsAdapter adapter = new BinsAdapter(getApplicationContext(), bins);
                     ListView listView = (ListView) findViewById(R.id.binsList);
