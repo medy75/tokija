@@ -24,6 +24,7 @@ public class Client {
             if (token != null) {
                 requestBuilder.addHeader("X-User-Email", email);
                 requestBuilder.addHeader("X-User-Token", token);
+                requestBuilder.addHeader("Content-Type", "application/json");
             }
             Request request = requestBuilder.build();
             return chain.proceed(request);

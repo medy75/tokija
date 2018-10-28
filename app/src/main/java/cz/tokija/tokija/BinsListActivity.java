@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -32,6 +33,7 @@ public class BinsListActivity extends AppCompatActivity {
     APIInterface client;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class BinsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ProgressBar progressBar = findViewById(R.id.indeterminateBar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +63,7 @@ public class BinsListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                 if (response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
                     ArrayList<Bin> bins = new ArrayList<>(response.body());
                     BinsAdapter adapter = new BinsAdapter(getApplicationContext(), bins);
                     ListView listView = (ListView) findViewById(R.id.binsList);
@@ -112,9 +116,10 @@ public class BinsListActivity extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener clickListener(ArrayList<Bin> bins){
         return (adapterView, view, i, l) -> {
-            showToast("starting bin detail activity: " + i);
+//            showToast("starting bin detail activity: " + i);
             Intent myIntent = new Intent(BinsListActivity.this, BinDetailActivity.class);
             myIntent.putExtra("binId", String.valueOf(bins.get(i).getId()));
+            myIntent.putExtra("firmId", String.valueOf(bins.get(i).getFirmId()));
             startActivity(myIntent);
         };
     }

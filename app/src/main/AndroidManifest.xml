@@ -19,19 +19,19 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".NewBinQR"
-            android:label="@string/app_name">
+            android:label="@string/app_name" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".BarcodeCaptureActivity" />
+        <activity
+            android:name=".BinsListActivity"
+            android:label="@string/title_activity_bins_list"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".BarcodeCaptureActivity" />
-        <activity
-            android:name=".BinsListActivity"
-            android:label="@string/title_activity_bins_list"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BinDetailActivity"
             android:label="@string/title_activity_bin_detail"

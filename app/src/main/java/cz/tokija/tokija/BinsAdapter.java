@@ -1,12 +1,10 @@
 package cz.tokija.tokija;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -35,7 +33,7 @@ public class BinsAdapter extends ArrayAdapter<Bin> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_bin, parent, false);
         }
         // Lookup view for data population
-        TextView binNumber = convertView.findViewById(R.id.binNumber);
+        TextView binNumber = convertView.findViewById(R.id.binNumberLabel);
         TextView binFirm = convertView.findViewById(R.id.binFirm);
         TextView binFrequency = convertView.findViewById(R.id.binFrequency);
         TextView binCollectDate = convertView.findViewById(R.id.binCollectDate);
@@ -60,6 +58,6 @@ public class BinsAdapter extends ArrayAdapter<Bin> {
         DateTime now = DateTime.now();
         Period period = new Period(now, collectDate);
         int days = period.getDays();
-        return period.getDays() <= 2;
+        return period.getYears() <= 0 && period.getWeeks() <= 0 && period.getDays() <= 2;
     }
 }
