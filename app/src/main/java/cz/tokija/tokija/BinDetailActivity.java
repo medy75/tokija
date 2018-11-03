@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,6 +31,7 @@ public class BinDetailActivity extends MainActivity {
 
     APIInterface client;
     private Bin bin;
+    SwipeRefreshLayout pullToRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,11 @@ public class BinDetailActivity extends MainActivity {
         client = new Client().getClient();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showProgressBar();
+        pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setRefreshing(true);
+        pullToRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent);
+        pullToRefresh.setOnRefreshListener(this::loadDetail);
+        //showProgressBar();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -49,57 +55,7 @@ public class BinDetailActivity extends MainActivity {
 //            }
 //        });
 
-        Intent mIntent = getIntent();
-        String binId = mIntent.getStringExtra("binId");
-        String firmId = mIntent.getStringExtra("firmId");
-
-        client.getBin(Integer.parseInt(binId)).enqueue(new Callback<Bin>() {
-            @Override
-            public void onResponse(Call<Bin> call, Response<Bin> response) {
-                if (response.isSuccessful()) {
-                    bin = response.body();
-                    setBinFields(bin);
-                } else {
-                    try {
-                        showToast(response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Bin> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        t.getMessage(),
-                        Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-
-        client.getFirm(Integer.parseInt(firmId)).enqueue(new Callback<Firm>() {
-            @Override
-            public void onResponse(Call<Firm> call, Response<Firm> response) {
-                if (response.isSuccessful()) {
-                    Firm firm = response.body();
-                    setFirmFields(firm);
-                } else {
-                    try {
-                        showToast(response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Firm> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        t.getMessage(),
-                        Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
+        loadDetail();
 
         Button replaceButton = findViewById(R.id.replaceButton);
         replaceButton.setOnClickListener(new View.OnClickListener() {
@@ -137,10 +93,75 @@ public class BinDetailActivity extends MainActivity {
                 });
             }
         });
+
+        Button placeButton = findViewById(R.id.placeBinButton);
+        placeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void loadDetail(){
+        Intent mIntent = getIntent();
+        int binId = Integer.parseInt(mIntent.getStringExtra("binId"));
+        //int firmId = Integer.parseInt(mIntent.getStringExtra("firmId"));
+        client.getBin(binId).enqueue(new Callback<Bin>() {
+            @Override
+            public void onResponse(Call<Bin> call, Response<Bin> response) {
+                if (response.isSuccessful()) {
+                    bin = response.body();
+                    loadFirmDetail(bin.getFirmId());
+                    setBinFields(bin);
+
+                } else {
+                    try {
+                        pullToRefresh.setRefreshing(false);
+                        showToast(response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Bin> call, Throwable t) {
+                pullToRefresh.setRefreshing(false);
+                showToast(t.getMessage());
+            }
+        });
+    }
+
+    private void loadFirmDetail(int firmId){
+        client.getFirm(firmId).enqueue(new Callback<Firm>() {
+            @Override
+            public void onResponse(Call<Firm> call, Response<Firm> response) {
+                if (response.isSuccessful()) {
+                    Firm firm = response.body();
+                    pullToRefresh.setRefreshing(false);
+                    setFirmFields(firm);
+                } else {
+                    try {
+                        showToast(response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Firm> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        t.getMessage(),
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
     }
 
     private void setBinFields(Bin bin) {
-        hideProgressBar();
+        //hideProgressBar();
 
         TextView binNumber = findViewById(R.id.binNumber);
         TextView binCollect = findViewById(R.id.binCollectDate);
@@ -168,7 +189,7 @@ public class BinDetailActivity extends MainActivity {
     }
 
     private void setFirmFields(Firm firm) {
-        hideProgressBar();
+        //hideProgressBar();
 
         TextView firmName = findViewById(R.id.firmName);
         TextView firmAddress = findViewById(R.id.firmAddress);

@@ -81,15 +81,14 @@ public class BinsListActivity extends MainActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    pullToRefresh.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Bin>> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        t.getMessage(),
-                        Toast.LENGTH_LONG);
-                toast.show();
+                showToast(t.getMessage());
+                pullToRefresh.setRefreshing(false);
             }
         });
     }

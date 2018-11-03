@@ -10,7 +10,7 @@ import android.widget.Toast;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
 
     protected void showToast(String message) {
         Toast toast = Toast.makeText(getApplicationContext(),
@@ -19,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    protected void showProgressBar(){
-        progressBar = findViewById(R.id.indeterminateBar);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    protected void hideProgressBar(){
-        progressBar.setVisibility(View.GONE);
-    }
+//    protected void showProgressBar(){
+//        progressBar = findViewById(R.id.indeterminateBar);
+//        progressBar.setVisibility(View.VISIBLE);
+//    }
+//
+//    protected void hideProgressBar(){
+//        progressBar.setVisibility(View.GONE);
+//    }
 }
