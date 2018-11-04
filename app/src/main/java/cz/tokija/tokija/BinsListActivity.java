@@ -31,7 +31,7 @@ import retrofit2.Response;
 
 public class BinsListActivity extends MainActivity {
 
-    APIInterface client;
+
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
     SwipeRefreshLayout pullToRefresh;
@@ -39,9 +39,6 @@ public class BinsListActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Client.setEmail("info@tokija.cz");
-        Client.setToken("5Sbupp-Sk5wnDYZqvpz_");
-        client = new Client().getClient();
         setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,7 +61,7 @@ public class BinsListActivity extends MainActivity {
     }
 
     private void loadBinData(){
-        client.getBins().enqueue(new Callback<List<Bin>>() {
+        getClient().getBins().enqueue(new Callback<List<Bin>>() {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
                 if (response.isSuccessful()) {

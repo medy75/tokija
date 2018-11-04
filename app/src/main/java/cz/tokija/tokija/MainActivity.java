@@ -5,12 +5,25 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import cz.tokija.tokija.client.APIInterface;
+import cz.tokija.tokija.client.Client;
+
 /**
  * Author: jaroslavmedek on 28/10/2018.
  */
 public class MainActivity extends AppCompatActivity {
 
-    //private ProgressBar progressBar;
+    private APIInterface client;
+
+    public MainActivity() {
+        Client.setEmail("info@tokija.cz");
+        Client.setToken("5Sbupp-Sk5wnDYZqvpz_");
+        client = new Client().getClient();
+    }
+
+    protected APIInterface getClient(){
+        return client;
+    }
 
     protected void showToast(String message) {
         Toast toast = Toast.makeText(getApplicationContext(),
@@ -18,13 +31,4 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG);
         toast.show();
     }
-
-//    protected void showProgressBar(){
-//        progressBar = findViewById(R.id.indeterminateBar);
-//        progressBar.setVisibility(View.VISIBLE);
-//    }
-//
-//    protected void hideProgressBar(){
-//        progressBar.setVisibility(View.GONE);
-//    }
 }

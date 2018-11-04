@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -29,7 +31,6 @@ import retrofit2.Response;
 
 public class BinDetailActivity extends MainActivity {
 
-    APIInterface client;
     private Bin bin;
     SwipeRefreshLayout pullToRefresh;
 
@@ -37,7 +38,6 @@ public class BinDetailActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bin_detail);
-        client = new Client().getClient();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         pullToRefresh = findViewById(R.id.pullToRefresh);
@@ -72,7 +72,7 @@ public class BinDetailActivity extends MainActivity {
                 DateTime now = DateTime.now();
                 showToast("Taken date set to:" + now.toString());
                 bin.setTaken(now.toDate());
-                client.updateBin(bin.getId(), bin).enqueue(new Callback<Bin>() {
+                getClient().updateBin(bin.getId(), bin).enqueue(new Callback<Bin>() {
                     @Override
                     public void onResponse(Call<Bin> call, Response<Bin> response) {
                         if (response.isSuccessful()) {
@@ -98,7 +98,9 @@ public class BinDetailActivity extends MainActivity {
         placeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(BinDetailActivity.this, PlaceBinActivity.class);
+                intent.putExtra("bin", (new Gson()).toJson(bin));
+                startActivity(intent);
             }
         });
     }
@@ -107,7 +109,7 @@ public class BinDetailActivity extends MainActivity {
         Intent mIntent = getIntent();
         int binId = Integer.parseInt(mIntent.getStringExtra("binId"));
         //int firmId = Integer.parseInt(mIntent.getStringExtra("firmId"));
-        client.getBin(binId).enqueue(new Callback<Bin>() {
+        getClient().getBin(binId).enqueue(new Callback<Bin>() {
             @Override
             public void onResponse(Call<Bin> call, Response<Bin> response) {
                 if (response.isSuccessful()) {
@@ -134,7 +136,7 @@ public class BinDetailActivity extends MainActivity {
     }
 
     private void loadFirmDetail(int firmId){
-        client.getFirm(firmId).enqueue(new Callback<Firm>() {
+        getClient().getFirm(firmId).enqueue(new Callback<Firm>() {
             @Override
             public void onResponse(Call<Firm> call, Response<Firm> response) {
                 if (response.isSuccessful()) {

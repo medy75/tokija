@@ -35,7 +35,8 @@
         <activity
             android:name=".BinDetailActivity"
             android:label="@string/title_activity_bin_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PlaceBinActivity"></activity>
     </application>
 
 </manifest>
