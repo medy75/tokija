@@ -24,11 +24,10 @@
         <activity android:name=".BarcodeCaptureActivity" />
         <activity
             android:name=".BinsListActivity"
-            android:label="@string/title_activity_bins_list"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +35,7 @@
             android:name=".BinDetailActivity"
             android:label="@string/title_activity_bin_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PlaceBinActivity"></activity>
+        <activity android:name=".PlaceBinActivity" />
     </application>
 
 </manifest>
