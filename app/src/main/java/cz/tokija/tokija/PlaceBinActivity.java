@@ -64,7 +64,7 @@ public class PlaceBinActivity extends BaseActivity {
                 bin.setNote(binNote.getText().toString());
                 bin.setPlaced(DateTime.now().toDate());
                 bin.setFrequency(binFrequency.getText().toString());
-                bin.setCollectDate(DateTime.now().plusDays(Integer.parseInt(binFrequency.getText().toString())).toDate());
+                bin.setCollectDate(bin.getTaken().plusDays(Integer.parseInt(binFrequency.getText().toString())).toDate());
                 updateBin(bin);
             }
         });
