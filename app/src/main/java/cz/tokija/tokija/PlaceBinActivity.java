@@ -1,22 +1,28 @@
 package cz.tokija.tokija;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import cz.tokija.tokija.client.model.Bin;
 import cz.tokija.tokija.client.model.Firm;
@@ -28,6 +34,8 @@ public class PlaceBinActivity extends BaseActivity {
 
     SwipeRefreshLayout pullToRefresh;
     Bin bin;
+    Map<String, Integer> firmsMap = new HashMap<>();
+    //List<Firm> firmsList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,14 @@ public class PlaceBinActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Spinner spinner = findViewById(R.id.spinner);
-//                spinner.
+                EditText binNote = findViewById(R.id.newNote);
+                EditText binFrequency = findViewById(R.id.binFrequency);
+
+                bin.setFirmId(firmsMap.get(spinner.getSelectedItem().toString()));
+                bin.setNote(binNote.getText().toString());
+                bin.setPlaced(DateTime.now().toDate());
+                bin.setFrequency(binFrequency.getText().toString());
+                updateBin(bin);
             }
         });
     }
@@ -58,10 +73,12 @@ public class PlaceBinActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<Firm>> call, Response<List<Firm>> response) {
                 if (response.isSuccessful()){
+                    //firmsList = response.body();
                     fillSpinner(response.body());
                 } else {
                     try {
                         showToast(response.errorBody().string());
+                        gotoLoginIfUnauthorized(response.code());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -76,13 +93,40 @@ public class PlaceBinActivity extends BaseActivity {
         });
     }
 
+    private void updateBin(Bin bin){
+        getClient().updateBin(bin.getId(), bin).enqueue(new Callback<Bin>() {
+            @Override
+            public void onResponse(Call<Bin> call, Response<Bin> response) {
+                if (response.isSuccessful()) {
+                    showToast("Bin umístěn");
+                    Intent intent = new Intent(PlaceBinActivity.this, BinsListActivity.class);
+                    startActivity(intent);
+                } else {
+                    try {
+                        showToast(response.errorBody().string());
+                        gotoLoginIfUnauthorized(response.code());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Bin> call, Throwable t) {
+                showToast(t.getMessage());
+            }
+        });
+
+    }
+
     private void fillSpinner(List<Firm> firmsList){
         Spinner spinner = findViewById(R.id.spinner);
         List<String> names = new ArrayList<>();
         for (Firm firm : firmsList){
             names.add(firm.getName());
+            firmsMap.put(firm.getName(), firm.getId());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,names);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,names);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -101,11 +145,11 @@ public class PlaceBinActivity extends BaseActivity {
         //hideProgressBar();
 
         TextView binNumber = findViewById(R.id.binNumber);
-        TextView binCollect = findViewById(R.id.binCollectDate);
-        TextView binFrequency = findViewById(R.id.binFrequency);
+        //TextView binCollect = findViewById(R.id.binCollectDate);
+        EditText binFrequency = findViewById(R.id.binFrequency);
         TextView binPlaced = findViewById(R.id.binPlaced);
-        TextView binTken = findViewById(R.id.binTaken);
-        TextView binNote = findViewById(R.id.binNote);
+        //TextView binTaken = findViewById(R.id.binTaken);
+        EditText binNote = findViewById(R.id.newNote);
 //
 //        if ("sklad".equalsIgnoreCase(bin.getFirmName())){
 //            findViewById(R.id.notNewBinLayout).setVisibility(View.GONE);
@@ -117,11 +161,11 @@ public class PlaceBinActivity extends BaseActivity {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YYYY");
 
-        binNumber.setText(String.valueOf(bin.getId()));
-        binCollect.setText(bin.getCollectDate().toString(formatter));
-        binFrequency.setText(bin.getFrequency());
-        binPlaced.setText(bin.getPlaced().toString(formatter));
-        binTken.setText(bin.getTaken().toString(formatter));
+        binNumber.setText(String.valueOf(bin.getNumber()));
+        //binCollect.setText(bin.getCollectDate().toString(formatter));
+        //binFrequency.setText(bin.getFrequency());
+        binPlaced.setText(DateTime.now().toString(formatter));
+        //binTaken.setText(bin.getTaken().toString(formatter));
         binNote.setText(bin.getNote());
     }
 
