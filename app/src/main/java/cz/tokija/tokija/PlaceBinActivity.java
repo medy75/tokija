@@ -60,9 +60,11 @@ public class PlaceBinActivity extends BaseActivity {
                 EditText binFrequency = findViewById(R.id.binFrequency);
 
                 bin.setFirmId(firmsMap.get(spinner.getSelectedItem().toString()));
+                bin.setFirmName(spinner.getSelectedItem().toString());
                 bin.setNote(binNote.getText().toString());
                 bin.setPlaced(DateTime.now().toDate());
                 bin.setFrequency(binFrequency.getText().toString());
+                bin.setCollectDate(DateTime.now().plusDays(Integer.parseInt(binFrequency.getText().toString())).toDate());
                 updateBin(bin);
             }
         });
