@@ -182,7 +182,7 @@ public class BinDetailActivity extends MainActivity {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/YYYY");
 
-        binNumber.setText(String.valueOf(bin.getId()));
+        binNumber.setText(String.valueOf(bin.getNumber()));
         binCollect.setText(bin.getCollectDate().toString(formatter));
         binFrequency.setText(bin.getFrequency());
         binPlaced.setText(bin.getPlaced().toString(formatter));
