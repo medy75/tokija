@@ -3,17 +3,12 @@ package cz.tokija.tokija;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -22,14 +17,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.tokija.tokija.client.APIInterface;
 import cz.tokija.tokija.client.Client;
 import cz.tokija.tokija.client.model.Bin;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BinsListActivity extends MainActivity {
+public class BinsListActivity extends BaseActivity {
 
 
     private static final int RC_BARCODE_CAPTURE = 9001;
@@ -38,6 +32,13 @@ public class BinsListActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (SaveSharedPreference.getPrefEmail(getBaseContext()).length() == 0) {
+            Intent intent = new Intent(BinsListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            Client.setEmail(SaveSharedPreference.getPrefEmail(getBaseContext()));
+            Client.setToken(SaveSharedPreference.getPrefToken(getBaseContext()));
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bins_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,11 +57,15 @@ public class BinsListActivity extends MainActivity {
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
         });
 
-        loadBinData();
-
+        if (SaveSharedPreference.getPrefEmail(getApplicationContext()).length() == 0) {
+            Intent intent = new Intent(BinsListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            loadBinData();
+        }
     }
 
-    private void loadBinData(){
+    private void loadBinData() {
         getClient().getBins().enqueue(new Callback<List<Bin>>() {
             @Override
             public void onResponse(Call<List<Bin>> call, Response<List<Bin>> response) {
@@ -74,11 +79,13 @@ public class BinsListActivity extends MainActivity {
                     listView.setOnItemClickListener(clickListener(bins));
                 } else {
                     try {
+                        pullToRefresh.setRefreshing(false);
                         showToast(response.errorBody().string());
+                        Intent intent = new Intent(BinsListActivity.this, LoginActivity.class);
+                        startActivity(intent);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    pullToRefresh.setRefreshing(false);
                 }
             }
 
@@ -110,13 +117,12 @@ public class BinsListActivity extends MainActivity {
                 showToast(String.format(getString(R.string.barcode_error),
                         CommonStatusCodes.getStatusCodeString(resultCode)));
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private AdapterView.OnItemClickListener clickListener(ArrayList<Bin> bins){
+    private AdapterView.OnItemClickListener clickListener(ArrayList<Bin> bins) {
         return (adapterView, view, i, l) -> {
 //            showToast("starting bin detail activity: " + i);
             Intent myIntent = new Intent(BinsListActivity.this, BinDetailActivity.class);

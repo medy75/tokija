@@ -2,14 +2,10 @@ package cz.tokija.tokija;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,15 +17,13 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 
-import cz.tokija.tokija.client.APIInterface;
-import cz.tokija.tokija.client.Client;
 import cz.tokija.tokija.client.model.Bin;
 import cz.tokija.tokija.client.model.Firm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BinDetailActivity extends MainActivity {
+public class BinDetailActivity extends BaseActivity {
 
     private Bin bin;
     SwipeRefreshLayout pullToRefresh;

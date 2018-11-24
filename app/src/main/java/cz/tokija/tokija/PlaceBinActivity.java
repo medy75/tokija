@@ -1,7 +1,6 @@
 package cz.tokija.tokija;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PlaceBinActivity extends MainActivity {
+public class PlaceBinActivity extends BaseActivity {
 
     SwipeRefreshLayout pullToRefresh;
     Bin bin;
