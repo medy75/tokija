@@ -81,8 +81,7 @@ public class BinsListActivity extends BaseActivity {
                     try {
                         pullToRefresh.setRefreshing(false);
                         showToast(response.errorBody().string());
-                        Intent intent = new Intent(BinsListActivity.this, LoginActivity.class);
-                        startActivity(intent);
+                        gotoLoginIfUnauthorized(response.code());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -74,6 +74,7 @@ public class BinDetailActivity extends BaseActivity {
                         } else {
                             try {
                                 showToast(response.errorBody().string());
+                                gotoLoginIfUnauthorized(response.code());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -110,11 +111,11 @@ public class BinDetailActivity extends BaseActivity {
                     bin = response.body();
                     loadFirmDetail(bin.getFirmId());
                     setBinFields(bin);
-
                 } else {
                     try {
                         pullToRefresh.setRefreshing(false);
                         showToast(response.errorBody().string());
+                        gotoLoginIfUnauthorized(response.code());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -140,6 +141,7 @@ public class BinDetailActivity extends BaseActivity {
                 } else {
                     try {
                         showToast(response.errorBody().string());
+                        gotoLoginIfUnauthorized(response.code());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
