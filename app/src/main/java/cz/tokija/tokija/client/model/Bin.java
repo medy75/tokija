@@ -1,6 +1,8 @@
 package cz.tokija.tokija.client.model;
 
 
+import android.content.Intent;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -24,7 +26,7 @@ public class Bin {
     private Integer number;
     @SerializedName("frequency")
     @Expose
-    private String frequency;
+    private Integer frequency;
     @SerializedName("placed")
     @Expose
     private Date placed;
@@ -83,11 +85,15 @@ public class Bin {
     }
 
     public String getFrequency() {
-        return frequency;
+        return String.valueOf(frequency);
+    }
+
+    public void setFrequency(Integer frequency) {
+        this.frequency = frequency;
     }
 
     public void setFrequency(String frequency) {
-        this.frequency = frequency;
+        this.frequency = Integer.parseInt(frequency);
     }
 
     public DateTime getPlaced() {
