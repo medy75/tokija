@@ -29,4 +29,5 @@
     <string name="title_activity_bins_list">Bins list</string>
     <string name="title_activity_bin_detail">Bin detail</string>
     <string name="prompt_token">Token</string>
+    <string name="title_activity_place_bin">Place bin</string>
 </resources>

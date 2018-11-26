@@ -26,4 +26,5 @@
     <string name="title_activity_bins_list">Seznam binů</string>
     <string name="title_activity_bin_detail">Detail binu</string>
     <string name="prompt_token">Token</string>
+    <string name="title_activity_place_bin">Umístit bin</string>
 </resources>
